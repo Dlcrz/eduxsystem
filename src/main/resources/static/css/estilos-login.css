@@ -1,0 +1,147 @@
+
+
+button:hover {
+    cursor: pointer;
+  }
+
+    .form2{
+        width:35rem;
+        margin: auto;
+        color:whitesmoke;
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        background-color: rgba(11, 15, 13, 0.582);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+    
+    body {
+      background-color: #333;
+  }
+
+      
+    header {
+      margin-bottom: 100px;
+  }
+  body {
+    background: #323b44;
+    margin: 0;
+    color: #98a6ad;
+    overflow-x: hidden !important;
+    font-size: 0.95rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding-bottom: 65px; }
+
+  .custom-margin {
+    margin-bottom: 15px;
+}
+.btn-custom-width {
+  width: 300px;
+}
+
+/* Notification */
+.notification-list {
+  margin-left: 0 !important; }
+  .notification-list .noti-title {
+    margin-bottom: 0;
+    width: auto;
+    padding: 12px 20px; }
+    .notification-list .noti-title h5 {
+      margin: 0; }
+    .notification-list .noti-title .label {
+      float: right; }
+  .notification-list .noti-icon {
+    font-size: 18px;
+    padding: 0 12px;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.8); }
+  .notification-list .noti-icon-badge {
+    display: inline-block;
+    position: absolute;
+    top: 14px;
+    right: 8px; }
+  .notification-list .notify-item {
+    padding: 10px 20px; }
+    .notification-list .notify-item .notify-icon {
+      float: left;
+      height: 36px;
+      width: 36px;
+      line-height: 36px;
+      text-align: center;
+      margin-right: 10px;
+      border-radius: 50%;
+      color: #ffffff; }
+      .notification-list .notify-item .notify-icon img {
+        margin-top: 4px; }
+    .notification-list .notify-item .notify-details {
+      margin-bottom: 0;
+      overflow: hidden;
+      margin-left: 45px;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+      .notification-list .notify-item .notify-details b {
+        font-weight: 500; }
+      .notification-list .notify-item .notify-details small {
+        display: block; }
+      .notification-list .notify-item .notify-details span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px; }
+  .notification-list .notify-all {
+    border-radius: 0 0 0.25rem 0.25rem;
+    margin: 0 0 -5px 0;
+    background-color: #414d59; }
+  .notification-list .profile-dropdown .notify-item {
+    padding: 4px 20px; }
+
+    .img-circle-small {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+  }
+  .pull-right {
+    float: right;
+  }
+  .no-arrow {
+    .dropdown-toggle::after {
+      display: none;
+    }
+  }
+
+.form-control {
+  border-radius: 0.0em;
+}
+#show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 100;
+  float: right;
+
+}
+
+#loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.btn-custom-success {
+  background-color:#95D3DB; /* Cambia el color de fondo a tu preferencia */
+  border-color: #ff5733; /* Cambia el color del borde si es necesario */
+}
+
+.btn-custom-success:hover {
+  background-color: #ff8144; /* Cambia el color de fondo en el hover */
+  border-color: #ff8144; /* Cambia el color del borde en el hover */
+}

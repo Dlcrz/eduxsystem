@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Configuración</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Configuración del sistema</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Configuración</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+
+                <div class="card-body">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"> Datos del sistema</button>
+                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false"> Correos</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6 class="m-t-3 m-b-20 header-title mt-3"><b>Configuración de datos del sistema</b></h6>
+
+                                </div>
+                                <div class="col-md-4 mt-3" align="right">
+                                    <button class="btn btn-primary  waves-effect waves-light w-lg m-b-5"><i class="fa fa-save"></i>&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label required-label">Nombre de la institucion<span>*</span>:</label>
+                                        <input id="nombrecolegio" name="nombrecolegio" type="text" class="form-control campo-req" placeholder="Ingrese el nombre de la institución" value="" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label required-label">Teléfono<span>*</span>:</label>
+                                        <input id="telefono" name="telefono" type="text" class="form-control campo-req" placeholder="#" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label required-label">Correo principal<span>*</span>:</label>
+                                        <input id="correo_principal" name="correo_principal" type="text" class="form-control campo-req" placeholder="Correo principal" value="">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label required-label">Ugel<span>*</span>:</label>
+                                        <input id="ugel" name="telefono" type="text" class="form-control campo-req" placeholder="Ugel perteneciente" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label required-label">Texto copyright<span>*</span>:</label>
+                                        <input id="copyrighttxt" name="copyrighttxt" type="text" class="form-control" placeholder="copyrighttxt" value="" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <p class="text-muted m-b-30 font-15">
+                                        Configuración de logos y personalización
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="imglogocolegio">
+                                            Logo de la institución
+                                        </label>
+                                        <input type="file" name="imglogocolegio" id="imglogocolegio" class="form-control">
+                                        <img src="/disanto-system/images/img_sistema/" class="thumb" alt="logo de la institución" style="height:200px;width:200px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <img id="imgSalida1" width="100%" height="100%" src="" style="display:none;" />
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="imglogoestado">
+                                            Logo del estado
+                                        </label>
+                                        <input type="file" name="imglogoestado" id="imglogoestado" class="form-control">
+                                        <img src="/disanto-system/images/logo/" class="thumb" alt="logo del estado" style="height:150px;width:150px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <img id="imgSalida2" width="100%" height="100%" src="" style="display:none;" />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6 class="m-t-0 m-b-20 header-title mt-3"><b>Configuración de la cuenta de envío de correos</b></h6>
+                                    <p class="text-muted m-b-30 font-13">
+                                        Configuración general de envio de correo.
+                                    </p>
+                                </div>
+                                <div class="col-md-4 mt-3" align="right">
+                                    <button class="btn waves-effect waves-light w-lg m-b-5 btn-primary"><i class="fa fa-save"></i>&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mt-2">
+                                        <label>Habilitar Envío de Correos</label>
+                                        <input name="chkenvc" id="chk_envc" type="checkbox" class="js-switcorreo" data-color="#1174d8" data-size="small"  data-secondary-color="#ED5565" />&nbsp;<a data-toggle="tooltip" data-placement="right" data-original-title="Si esta opción esta desactivada, la configuración no se guardará"><i class="fa fa-question-circle"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mt-2">
+                                        <label>Servidor de Correo SMTP</label>
+                                        <select id="cboserv" name="cboserv" class="form-control">
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-2">
+                                        <label>Puerto *</label>
+                                        <input id="txtport" name="puerto" type="text" class="form-control campo-req" placeholder="Ingrese el Número del Puerto"  maxlength="3" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mt-2">
+                                        <label>Usuario de Correo *</label>&nbsp;<a data-toggle="tooltip" data-placement="top" data-original-title="A este usuario llegara los correos de notificación"><i class="fa fa-question-circle"></i></a>
+                                        <input id="txtcorreo" name="correo" type="email" class="form-control campo-req" placeholder="Ingrese su Correo Electronico" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-2">
+                                        <label>Contraseña *</label>
+                                        <input id="txtpass" name="clave" type="password" class="form-control campo-req" placeholder="Ingrese la Clave de su Correo" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    vista_previa_img('imglogocolegio', 'imgSalida1');
+    vista_previa_img('imglogoestado', 'imgSalida2');
+</script>
+</body>
+
+</html>

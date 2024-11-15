@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Asistencia</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Asistencias</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Asistencias</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column"> <!-- Contenedor para los elementos actuales -->
+                            <div class="alert alert-warning text-center mb-2" role="alert">
+                                <h5 id="fecha-hora-actual"></h5>
+                            </div>
+                            <h4>Asistencias para el aula: <span th:text="${codcorrelativo}"></span></h4>
+                        </div>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <a th:href="@{/salon/listarClasesSalon(salonId=${SalonId})}" type="button"
+                               class="btn btn-danger"><i class="fa-solid fa-arrow-rotate-left fa-fade"></i>&nbsp;Volver
+                                al listado de clases</a>
+                        </div>
+                    </div>
+                    <br>
+                    <form id="formAsistencia">
+                        <div class="row">
+                            <input type="hidden" name="salonId" id="salonId" th:value="${SalonId}">
+                            <input type="hidden" name="claseId" id="claseId" th:value="${ClaseId}">
+                            <div class="col-md-4 ">
+                                <label for="fecha_asistencia" class="ms-1">Fecha de asistencia</label>
+                                <input type="date" class="form-control" name="fecha_asistencia" id="fecha_asistencia" required readonly>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <button  type="submit" class="btn btn-primary">Consultar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <h4>Listado de estudiantes </h4>
+                    </div>
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <strong>
+                            <span>IMPORTANTE: </span>
+                            <span style="color: #28a745;">A = ASISTIÓ</span>
+                            <span style="color: #dc3545;">F = FALTÓ</span>
+                            <span style="color: #ffc107;">T = TARDE</span>
+                            <span style="color: #6c757d;">NA = NINGUNO (POR DEFECTO)</span>.
+                        </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <div id="resultados" class="table-responsive small">
+                            <table id="tablaAsistencia" class="table table-striped table-sm table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th>Nombre Estudiante</th>
+                                    <th>Asistencia</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+    setInterval(function() {
+        actualizarFechaYHoraPorId("fecha-hora-actual");
+    }, 1000);
+
+    actualizarFechaYHoraPorId("fecha-hora-actual");
+    establecerFechaHoy('fecha_asistencia');
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Captura el evento de envío del formulario
+        $('#formAsistencia').submit(function(event) {
+            event.preventDefault(); // Evita el comportamiento por defecto del formulario
+            const salonId = document.getElementById("salonId").value;
+            const claseId = document.getElementById("claseId").value;
+            const fechaAsistencia = document.getElementById("fecha_asistencia").value;
+
+            var urlgetasis = '/api_colegio/asistencias/' + claseId + '/' + salonId+ '/' + fechaAsistencia;
+
+
+            // Enviar datos con AJAX
+            $.ajax({
+                url: urlgetasis,
+                type: 'GET',
+                success: function(data) {
+                    const tbody = $('#tablaAsistencia tbody');
+                    tbody.empty();
+                    data.forEach(function (asistencia) {
+                        let row = `<tr data-id="${asistencia.id}">
+                            <td>
+                            <label class="form-control">${asistencia.nombreEstudiante}</label>
+                            </td>
+                            <td>
+                                <input
+                                    type="text" class="form-control"
+                                    value="${asistencia.asistencia}"
+                                    name="asistencia"
+                                />
+                            </td>
+                        </tr>`;
+                        tbody.append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener asistencias:", error);
+
+                }
+            });
+        });
+    });
+
+
+    // enviar asistencia post
+    $(document).on('change', 'input[name="asistencia"]', function(e) {
+        let row = $(this).closest('tr');
+        let id = row.data('id');
+        let asistencia = $(this).val().trim();
+        const valoresPermitidos = ['T', 'F', 'A', 'NA'];
+        if (!valoresPermitidos.includes(asistencia)) {
+            console.log("Valor inválido de asistencia");
+            mostrarNotificacion("error", "Error", "Valor de asistencia inválido. Los valores permitidos son: T, F, A, NA.");
+            return;
+        }
+        let asistenciaData = {
+            id: id,
+            asistencia: asistencia
+        };
+        $.ajax({
+            url: '/api_colegio/guardarAsistenciasClase',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(asistenciaData),
+            success: function(response) {
+                mostrarNotificacion("success", "Éxito", response);
+            },
+            error: function(xhr, status, error) {
+                mostrarNotificacion("error", "Error", "Error al guardar la asistencia.");
+                console.error('Error al guardar la asistencia:', error);
+            }
+        });
+    });
+
+</script>
+</body>
+
+</html>

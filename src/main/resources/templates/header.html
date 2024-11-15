@@ -1,0 +1,49 @@
+<header class="navbar sticky-top tema-header-light flex-md-nowrap  p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white align-items-center" th:href="@{/inicio}" style="text-align: center">
+        <img src="https://static-00.iconduck.com/assets.00/high-school-icon-1024x1024-ojdislyg.png" alt="..." width="60" height="45">&nbsp;&nbsp;
+    </a>
+    <div class="text-center text-white align-items-center" style="position: absolute; left: 50%; transform: translateX(-50%);">
+        <h4>MI JESUS DEL PROGRESO</h4>
+    </div>
+
+    <ul class="navbar-nav flex-row d-md-none">
+        <li class="nav-item text-nowrap">
+            <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search">
+                <svg class="bi"><use xlink:href="#search"/></svg>
+            </button>
+        </li>
+        <li class="nav-item text-nowrap">
+            <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <svg class="bi"><use xlink:href="#list"/></svg>
+            </button>
+        </li>
+    </ul>
+    <div id="navbarSearch" class="navbar-search w-100 collapse">
+        <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+    </div>
+
+    <style>
+        /* Alinear elementos en una sola fila */
+        .dt-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+
+            .dt-container div {
+                margin-right: 15px;
+            }
+
+            .dt-container .dt-buttons {
+                margin-right: auto;
+            }
+
+            .dataTables_filter {
+                float: right;
+                text-align: right;
+            }
+    </style>
+
+</header>

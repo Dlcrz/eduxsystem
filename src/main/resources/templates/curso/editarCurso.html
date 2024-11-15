@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Nuevo usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Detalles del curso</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/curso/listarCurso}">Cursos</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detalles del curso</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex align-items-center">
+                        <div class="btn-toolbar mb-2 mb-md-0">
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="formularioComprobante" action="/curso/actualizar" method="post" class="row g-3"
+                          th:object="${curso}">
+                        <div class="col-md-6">
+                            <label class="form-label">Codigo</label>
+                            <input th:field="${curso.id}" type="text" class="form-control" name="cod"
+                                   placeholder="Código" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre</label>
+                            <input th:field="${curso.nombre}" type="text" class="form-control" name="nom"
+                                   placeholder="Nombre" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Descripcion</label>
+                            <input th:field="${curso.descripcion}" type="text" class="form-control"
+                                   name="descripcion" placeholder="descripcion" required>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+
+                        <div class="gap-2 col-12 text-center">
+                            <button th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Administrador')}"   type="button" id="confirmarGuardar" class="btn btn-primary"><i class="fa-solid fa-save"></i> Guardar</button>
+                            <a th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Administrador')}" th:href="@{/curso/listarCurso}" type="button" class="btn btn-danger"><i class="fa-solid fa-cancel"></i> Cancelar</a>
+                            <a th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Profesor')}" th:href="@{/inicio}" type="button" class="btn btn-danger"><i class="fa-solid fa-return"></i> Volver al inicio</a>
+                        </div>
+                    </form>
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script th:if="${cursotrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${cursotrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+<script>
+    $(document).ready(function () {
+        $('#confirmarGuardar').on('click', function () {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción actualizará los datos del curso.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    document.getElementById('formularioComprobante').submit();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>>

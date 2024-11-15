@@ -1,0 +1,108 @@
+<div class="sidebar border d-lg-block border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
+    <div class="offcanvas-md offcanvas-end bg-body-tertiary " tabindex="-1" id="sidebarMenu"
+         aria-labelledby="sidebarMenuLabel">
+        <div class="offcanvas-header" style="text-align: center">
+            <h5 class="offcanvas-title" id="sidebarMenuLabel">MI JESUS DEL PROGRESO</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
+                    aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto" style="text-align: center">
+            <div class="thumb-xl member-thumb m-b-10 mx-auto text-center" style="text-align: center">
+                <div class="rounded-circle"
+                     style="height: 150px; width: 150px;  display: flex; justify-content: center; align-items: center;">
+
+                    <i class="fa-solid fa-circle-user fa-2x1" style="font-size: 120px;"></i>
+                </div>
+                <p class="text-muted" style="margin: 5px 0; font-size: 18px;">[[${usuariodetalle.getNombre()}]]</p>
+                <p class="text-muted" style="margin: 0; font-size: 12px;">[[${usuariodetalle.username}]]</p>
+            </div>
+            <br>
+            <ul class="nav flex-column mb-auto mx-auto text-center">
+                <li class="nav-item d-flex align-items-center gap-2">
+                    <a class="nav-link" th:href="@{/usuario/Perfil}" th:data-url="${urlPerfil}">
+                        <i class="fa-solid fa-user"></i>
+                        Perfil
+                    </a>
+                    <a sec:authorize="isAuthenticated" class="nav-link" th:href="@{/logout}">
+                        <svg class="bi">
+                            <use xlink:href="#door-closed"/>
+                        </svg>
+                        Salir
+                    </a>
+                </li>
+            </ul>
+            <hr class="my-3">
+
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" aria-current="page" th:href="@{/inicio}" th:data-url="${urlInicio}">
+                        <svg class="bi">
+                            <use xlink:href="#house-fill"/>
+                        </svg>
+                        INICIO
+                    </a>
+                </li>
+
+                <li class="nav-item" th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Administrador')}">
+                        <a class="nav-link d-flex align-items-center gap-2" th:href="@{/usuario/listarUsuario}" th:data-url="${urlListarUsuario}">
+                            <i class="fa-solid fa-users"></i>
+                            Usuarios
+                        </a>
+
+                </li>
+
+                <li class="nav-item" th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Administrador')}">
+                <a class="nav-link d-flex align-items-center gap-2" th:href="@{/estudiante/listarEstudiante}" th:data-url="${urlListarEstudiante}">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        Estudiantes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/salon/listarSalon}" th:data-url="${urlListarSalon}">
+                        <i class="fa-solid fa-window-restore"></i>
+                        Salones
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/curso/listarCurso}" th:data-url="${urlListarCurso}">
+                        <i class="bi bi-card-checklist"></i>
+                        Cursos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" th:href="@{/home}" >
+                        <i class="bi bi-card-checklist"></i>
+                        Home
+                    </a>
+                </li>
+
+
+
+            </ul>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var currentUrl = window.location.pathname;
+                    var navLinks = document.querySelectorAll('.nav-link');
+
+                    navLinks.forEach(function (link) {
+                        var dataUrl = link.getAttribute('data-url');
+                        if (dataUrl && dataUrl === currentUrl) {
+                            link.classList.add('active');
+                        }
+                    });
+                });
+            </script>
+            <br>
+            <br>
+            <br>
+            <br>
+
+
+        </div>
+
+    </div>
+
+</div>

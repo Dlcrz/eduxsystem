@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Trimestres</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Listado de trimestres</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Trimestres</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex align-items-center">
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button  type="button" class="btn btn-sm btn-outline-secondary gap-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#agregarTrimestreModal">
+                                <i class="fa-solid fa-plus"></i>&nbsp;
+                                Nuevo trimestre
+                            </button>&nbsp;
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tablaTrimestres" class="table table-striped table-sm table-hover text-center m-b-0 table-bordered toggle-arrow-tiny" data-page-size="20">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Trimestre</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr th:each="trimestres,x: ${trimestres}">
+                                <th th:text="${x.count}" scope="row"></th>
+
+                                <td th:text="${trimestres.trimestre}"></td>
+                                <td th:text="${trimestres.anio}"></td>
+                                <td th:if="${usuariodetalle != null and #strings.equals(usuariodetalle.authorities[0].getAuthority(), 'Administrador')}" >
+
+                                    <a th:href="@{/trimestre/eliminar(cod=${trimestres.id})}" class="eliminar-trimestre"
+                                       style="color: red;"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar"><i
+                                            class="bi bi-trash-fill"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!---MODAL NUEVO CURSO-->
+            <div id="agregarTrimestreModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #5E8C85;">
+                            <h5 class="modal-title text-white" id="exampleModalLabel">Agregar Nuevo Trimestre</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/trimestre/registrarTrimestre" id="formularioTrimestre" method="post">
+                                <div class="mb-3">
+                                    <label for="trimestre" class="form-label">Trimestre</label>
+                                    <select class="form-select" id="trimestre" name="trimestre" required>
+                                        <option selected disabled>seleccione un trimestre</option>
+                                        <option value="I">I</option>
+                                        <option value="II">II</option>
+                                        <option value="III">III</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="trimestre" class="form-label">Año</label>
+                                    <select class="form-select" id="anio" name="anio" required>
+                                        <option selected disabled>seleccione un año</option>
+
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;Guardar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script th:if="${trimestretrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${trimestretrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+<script>
+    configurarEliminacionDinamica('tablaTrimestres', 'eliminar-trimestre', 'Esta acción eliminará el trimestre permanentemente.');
+    var tablesalon = configurarDataTable('tablaTrimestres', 'si');
+
+</script>
+<script>
+    const selectAnios = document.getElementById('anio');
+    const anioActual = new Date().getFullYear();
+
+
+    for (let i = anioActual; i <= anioActual + 1; i++) {
+        const option = document.createElement('option');
+        option.value = i;  // El valor del año
+        option.text = i;   // El texto visible en el select
+        selectAnios.appendChild(option);  // Añadir la opción al select
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Listado de usuarios</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex align-items-center">
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <a th:href="@{/usuario/nuevoUsuario}"
+                               class="btn btn-sm btn-outline-secondary gap-1">
+                                <i class="fa-solid fa-user-plus"></i>
+                                Nuevo Usuario
+                            </a>&nbsp;&nbsp;
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" id="tablaUsuarios">
+                            <thead class="table-light" style="width:100%">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">DNI</th>
+                                <th scope="col">Celular</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col" class="no-print">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="usuario,x: ${usuarios}" class="mt-3">
+                                <th th:text="${x.count}" scope="row"></th>
+                                <td th:text="${usuario.nombre}"></td>
+                                <td th:text="${usuario.apellido}"></td>
+                                <td th:text="${usuario.rol}"></td>
+                                <td th:text="${usuario.dni}"></td>
+                                <td th:text="${usuario.celular}"></td>
+                                <td th:text="${usuario.email}"></td>
+                                <td th:text="${usuario.direccion}"></td>
+                                <td th:text="${usuario.user}"></td>
+                                <td class="text-center no-print">
+                                    <div class="dropdown ms-auto">
+                                        <a class="dropdown-toggle dropdown-toggle-nocaret" href="#"
+                                           data-bs-toggle="dropdown"><i
+                                                class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item"
+                                                   th:href="@{/usuario/editar(cod=${usuario.id})}"><i
+                                                    class="fa-regular fa-pen-to-square"></i>&nbsp;Editar</a>
+                                            </li>
+                                            <li><a class="dropdown-item eliminar-usuario"
+                                                   th:href="@{/usuario/eliminar(cod=${usuario.id})}"><i
+                                                    class="bi bi-trash-fill"></i>&nbsp;Eliminar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script th:if="${usuariotrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${usuariotrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+<script>
+    configurarEliminacionDinamica('tablaUsuarios', 'eliminar-usuario', 'Esta acción eliminará el usuario permanentemente. Por favor primero elimine todos los registros relacionados con el usuario.');
+    var tableclvt = configurarDataTable('tablaUsuarios', 'no');
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<div>
+    <div class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+            <div>
+                <img src="../imagenes/logo-icon.png" class="logo-icon" alt="logo icon">
+            </div>
+            <div>
+                <h4 class="logo-text">Eduxsystem</h4>
+            </div>
+            <div class="toggle-icon ms-auto"><i class='bx bx-menu'></i>
+            </div>
+        </div>
+        <!--navigation-->
+        <ul class="metismenu" id="menu">
+
+            <li>
+                <a th:href="@{/inicio}">
+                    <div class="parent-icon"><i class="bx bx-home-alt"></i>
+                    </div>
+                    <div class="menu-title">Inicio</div>
+                </a>
+            </li>
+
+
+            <li class="menu-label">General</li>
+
+            <li>
+                <a th:href="@{/salon/listarSalon}">
+                    <div class="parent-icon"><i class='bx bx-list-ul'></i>
+                    </div>
+                    <div class="menu-title">Salones</div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bxs-graduation'></i>
+                    </div>
+                    <div class="menu-title">Matrículas</div>
+                </a>
+                <ul>
+                    <li><a th:href="@{/estudiante/listarEstudiante}" ><i class='bx bx-radio-circle'></i>Estudiantes matriculados</a>
+                    </li>
+                    <li><a th:href="@{/estudiante/nuevoEstudiante}"><i class='bx bx-radio-circle'></i>Nuevo registro de matrícula</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a th:href="@{/curso/listarCurso}">
+                    <div class="parent-icon"><i class='bx bxs-book'></i>
+                    </div>
+                    <div class="menu-title">Cursos</div>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/grado/}">
+                    <div class="parent-icon"><i class='bx bxs-file'></i>
+                    </div>
+                    <div class="menu-title">Grados</div>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/trimestre}">
+                    <div class="parent-icon"><i class='bx bx-list-ul'></i>
+                    </div>
+                    <div class="menu-title">Trimestres</div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-list-ul'></i>
+                    </div>
+                    <div class="menu-title">Reportes</div>
+                </a>
+                <ul>
+                    <li><a th:href="@{/reportes/calificaciones}"><i class='bx bx-radio-circle'></i>Reportes de calificaciones</a>
+                    </li>
+                    <li><a th:href="@{/reportes/asistencias}"><i class='bx bx-radio-circle'></i>Reportes de asistencias</a>
+                    </li>
+
+                </ul>
+
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bxs-file'></i>
+                    </div>
+                    <div class="menu-title">Libreta notas finales</div>
+                </a>
+                <ul>
+                    <li><a th:href="@{/informesProgreso}" ><i class='bx bx-radio-circle'></i>Competencias de evaluación</a>
+                    </li>
+                    <li><a ><i class='bx bx-radio-circle'></i>Evaluar competencias</a>
+                    </li>
+
+                </ul>
+
+            </li>
+            <li class="menu-label">Administración</li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bxs-cog'></i>
+                    </div>
+                    <div class="menu-title">Sistema</div>
+                </a>
+                <ul>
+                    <li><a th:href="@{/configuracion}"><i class='bx bx-radio-circle'></i>Datos del sistema</a>
+                    </li>
+                    <li><a th:href="@{/usuario/listarUsuario}"><i class='bx bx-radio-circle'></i>Usuarios</a>
+                    </li>
+
+                </ul>
+
+            </li>
+
+
+
+        </ul>
+        <!--end navigation-->
+    </div>
+    <!--end sidebar wrapper -->
+    <!--start header -->
+    <header>
+        <div class="topbar d-flex align-items-center">
+            <nav class="navbar navbar-expand gap-3">
+                <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+                </div>
+
+
+                <div class="top-menu ms-auto">
+                    <ul class="navbar-nav align-items-center gap-1">
+
+                        <li class="nav-item">
+                            <a class="nav-link fa-solid fa-expand" href="#">
+                            </a>
+                        </li>
+                        <li class="nav-item dark-mode d-none d-sm-flex">
+                            <a class="nav-link dark-mode-icon" href="javascript:;"><i class='bx bx-moon'></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown dropdown-app">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"
+                               href="javascript:;"><i class='bx bx-grid-alt'></i></a>
+                            <div class="dropdown-menu dropdown-menu-end p-0">
+                                <div class="app-container p-2 my-2">
+                                    <div class="row gx-0 gy-2 row-cols-3 justify-content-center p-2">
+
+                                        <div class="col">
+                                            <a href="https://mail.google.com/mail/" target="_blank"
+                                               rel="noopener noreferrer">
+                                                <div class="app-box text-center">
+                                                    <div class="app-icon">
+                                                        <img src="../imagenes/app/gmail.png" width="30" alt="">
+                                                    </div>
+                                                    <div class="app-name">
+                                                        <p class="mb-0 mt-1">Gmail</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col">
+                                            <a href="https://outlook.office.com/mail/" target="_blank"
+                                               rel="noopener noreferrer">
+                                                <div class="app-box text-center">
+                                                    <div class="app-icon">
+                                                        <img src="../imagenes/app/outlook.png" width="30" alt="">
+                                                    </div>
+                                                    <div class="app-name">
+                                                        <p class="mb-0 mt-1">Outlook</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                    </div><!--end row-->
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown dropdown-large">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
+                               data-bs-toggle="dropdown"><span class="alert-count" th:text="${#lists.size(notificaciones)}"></span>
+                                <i class='bx bx-bell'></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a href="javascript:;">
+                                    <div class="msg-header">
+                                        <p class="msg-header-title">Notificaciones</p>
+
+                                    </div>
+                                </a>
+
+
+                                <div class="header-notifications-list">
+                                    <div th:each="notificacion : ${notificaciones}">
+
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="">
+                                                    <i class="bi bi-x-circle msg-avatar text-danger" style="font-size: 1.5rem;"></i>
+                                                </div>
+                                                <div class="flex-grow-1 pe-4">
+                                                    <h6 class="msg-name" th:text="${notificacion.mensaje}"></h6>
+                                                    <p class="msg-info" th:text="${notificacion.fecha}"></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <a href="javascript:;">
+                                    <div class="text-center msg-footer">
+                                        <button class="btn btn-primary w-100">Todas las notificaciones</button>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="user-box dropdown px-3">
+                    <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../imagenes/Student.gif" class="user-img" alt="user avatar">
+                        <div class="user-info">
+                            <p class="user-name mb-0">[[${usuariodetalle.getNombre()}]]</p>
+                            <p class="designattion mb-0">[[${usuariodetalle.username}]]</p>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                class="bx bx-user fs-5"></i><span>Profile</span></a>
+                        </li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                class="bx bx-cog fs-5"></i><span>Settings</span></a>
+                        </li>
+
+                        <li>
+                            <div class="dropdown-divider mb-0"></div>
+                        </li>
+
+                        <li><a sec:authorize="isAuthenticated" class="dropdown-item d-flex align-items-center"
+                               th:href="@{/logout}"><i class="bx bx-log-out-circle"></i><span>Cerrar sesion</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <style>
+        /* Alinear elementos en una sola fila */
+        .dt-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dt-container div {
+            margin-right: 15px;
+        }
+
+        .dt-container .dt-buttons {
+            margin-right: auto;
+        }
+
+        .dataTables_filter {
+            float: right;
+            text-align: right;
+        }
+
+        .btn-primary {
+            background-color: #5e8c85 !important;
+            border-color: #5e8c85 !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #547175 !important;
+            border-color: #547175 !important;
+        }
+        .pagination .active > .page-link {
+            background-color: #5e8c85 !important;
+            color: #ffffff !important;
+            border-color: #5e8c85 !important;
+        }
+    </style>
+
+</div>

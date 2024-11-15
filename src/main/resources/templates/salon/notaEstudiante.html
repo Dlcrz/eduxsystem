@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div th:replace="cdn :: div"></div>
+    <title>Notas</title>
+    <link rel="icon"
+        href="https://img2.freepng.es/20180622/pt/kisspng-education-school-computer-icons-student-financial-massachusetts-school-building-authority-5b2d5b3def80d9.299022621529699133981.jpg"
+        type="image/jpeg">
+
+</head>
+<body>
+<div th:replace="~{iconosvg :: svg}"></div>
+<div th:replace="~{tematoggle :: div}"></div>
+<div th:replace="~{header :: header}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="menu :: div"></div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+            <div class="d-flex justify-content-between align-items-center pt-3 pb-1 ">
+                <h5 class="page-title">Nota para estudiantes</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{ /salon/listarSalon}">Salones</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Notas</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="bg-body-tertiary p-4 rounded">
+                <div class="card-box">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-warning text-center" role="alert">
+                                <h5 id="fecha-hora-actual"></h5>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6">
+                            <form action="/estudiante/buscar" method="post">
+                                <div class="input-group mb-3">
+                                    <input type="text" name="desc" class="form-control"
+                                           placeholder="Ingrese el criterio de busqueda"
+                                           aria-label="Recipient's username"
+                                           aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i
+                                            class="bi bi-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-sm btn-outline-secondary gap-1">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                Generar reporte de notas
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- <form action="/salon/guardarNota" method="post" class="row g-3" id="formularioAsistencia"> -->
+                        <div id="resultados" class="table-responsive small">
+                            <table id="tablaAsistencia" class="table table-striped table-sm table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Nota 1</th>
+                                    <th>Nota 2</th>
+                                    <th>Nota 3</th>
+                                    <th>Nota 4</th>
+                                    <th>Promedio Final</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody id="cuerpo-tabla">
+                                <!-- 
+                                    RETORNO DE LA BASE DE DATOS con innerjoin
+                                    Columnas: id, nota1, nota2, nota3, nota4, promedio, estudiante_id, nombre, apellido
+                                 -->
+                                <tr th:each="estudianteNota : ${listaNotas}">
+                                    
+                                        <td th:text="${estudianteNota[7]} + ' ' + ${estudianteNota[8]}"></td>
+                                        <td>
+                                            <input
+                                                type="number" min="0.0" max="20.0" step="0.1"
+                                                th:value="${estudianteNota[1]}"
+                                                name="nota1"
+                                                oninput="validarInput(this)"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number" min="0.0" max="20.0" step="0.1" 
+                                                th:value="${estudianteNota[2]}"
+                                                name="nota2"
+                                                oninput="validarInput(this)"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number" min="0.0" max="20.0" step="0.1"
+                                                th:value="${estudianteNota[3]}"
+                                                name="nota3"
+                                                oninput="validarInput(this)"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number" min="0.0" max="20.0" step="0.1"
+                                                th:value="${estudianteNota[4]}"
+                                                name="nota4"
+                                                oninput="validarInput(this)"
+                                            />
+                                        </td>
+                                        <td>
+                                            <span id="prom-calc"></span>
+                                            <input type="hidden" name="id-estudiante"
+                                                th:value="${estudianteNota[6]}"/>
+                                            <input type="hidden" name="id-registronota"
+                                                th:value="${estudianteNota[0]}"/>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary edit-button" >
+                                                <i class="fa-solid fa-pen-to-square" id="action-button"></i>
+                                            </a>
+                                        </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- <br>
+                            <div class="gap-2 col-12 text-center">
+                                <button type="submit" id="confirmarGuardar" class="btn btn-primary">Guardar</button>
+                                <a th:href="@{/salon/listarSalon}" type="button" class="btn btn-danger">cancelar</a>
+                            </div> -->
+                        </div>
+                    <!-- </form> -->
+
+                    <nav aria-label="Page navigation example pt-3">
+                        <ul class="pagination pagination-sm  justify-content-end">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#">1</a>
+                            </li> <!-- Elemento activo -->
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+
+            <br>
+
+        </main>
+    </div>
+</div>
+<script>
+    let ultimoValorValido;
+
+    function validarInput(input) {
+        // Obtener el valor actual del input
+        let valor = input.value;
+
+        // Validar que sea un número y está en el rango permitido
+        if (isNaN(valor) || parseFloat(valor) < 0 || parseFloat(valor) > 20) {
+            // Si no cumple con las condiciones, establecer el valor a vacío
+            input.value = ultimoValorValido || "";
+        } else {
+            ultimoValorValido = valor;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        function calcularPromedio() {
+            const filas = document.querySelectorAll("#cuerpo-tabla tr");
+            
+            // Buscar cada input de tipo number y asignar el promedio a elemento #prom-calc
+            filas.forEach((fila) => {
+                const inputs = Array.from(fila.querySelectorAll("input[type=number]"));
+                
+                let sumNotas = 0;
+                inputs.forEach((input) => {
+                    sumNotas += parseFloat(input.value);
+                });
+                const promedioCol = fila.querySelector("#prom-calc");
+                const promedio = sumNotas / 4;
+                promedioCol.innerText = promedio;
+
+                promedioCol.classList = [];
+                if (promedio >= 0 && promedio <= 10) {
+                    promedioCol.classList.add("prom-bajo");
+                } else if (promedio > 10 && promedio <= 16) {
+                    promedioCol.classList.add("prom-medio");
+                } else {
+                    promedioCol.classList.add("prom-alto");
+                }
+            });
+        }
+
+        // Calcular promedio ni bien carga la página
+        calcularPromedio();
+
+        // Agregar eventos change a los inputs "number" para actualizarPromedio
+        const inputsNumber = document.querySelectorAll("input[type=number]");
+        inputsNumber.forEach((input) => {
+            input.addEventListener("change", calcularPromedio);
+        });
+    });
+
+    $(document).ready(function () {
+
+        $("input[type='number']").prop("disabled", true);
+
+        // $("input[type='number']").on("change", function () {
+            // var row = $(this).closest("tr"); // Encuentra la fila padre
+            // var nota1 = parseFloat(row.find("input[name^='notauno']").val());
+            // var nota2 = parseFloat(row.find("input[name^='notados']").val());
+            // var nota3 = parseFloat(row.find("input[name^='notatres']").val());
+            // var nota4 = parseFloat(row.find("input[name^='notacuatro']").val());
+            // var promedio = (nota1 + nota2 + nota3 + nota4) / 4;
+            // console.log(promedio);
+            // row.find("input[name^='promedio']").val(promedio.toFixed(1));
+        // });
+
+        $(".edit-button").click(function () {
+            var row = $(this).closest("tr");
+            if (row.hasClass("editable")) {
+                row.find("input[type='number']").prop("disabled", true);
+                row.removeClass("editable");
+
+                // -------------------------------------------------------------
+                // ## GUARDAR DATOS EN DB
+                // -------------------------------------------------------------
+                // Obtener los valores de los elementos input
+                let nota1 = Number(row.find("input[name='nota1']").val());
+                let nota2 = Number(row.find("input[name='nota2']").val());
+                let nota3 = Number(row.find("input[name='nota3']").val());
+                let nota4 = Number(row.find("input[name='nota4']").val());
+                let idEstudiante = Number(row.find("input[name='id-estudiante']").val());
+                let idRegistroNota = Number(row.find("input[name='id-registronota']").val());
+
+                // Crear un objeto FormData y agregar los valores
+                let formData = new FormData();
+                formData.append("nota1", nota1);
+                formData.append("nota2", nota2);
+                formData.append("nota3", nota3);
+                formData.append("nota4", nota4);
+                formData.append("promedio", (nota1 + nota2 + nota3 + nota4) / 4);
+                formData.append("idEstudiante", Number(idEstudiante));
+                formData.append("idRegistroNota", Number(idRegistroNota));
+
+
+                /*formData.forEach(function(clave, valor) {
+                    console.log(clave, valor);
+                });
+                */
+                // Simular un envío POST de formulario usando fetch
+                fetch("http://localhost:90/salon/registro-nota/", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Manejar la respuesta del servidor si es necesario
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.log("errorcito");
+                    console.error("Error:", error);
+                });
+
+                // Actualizar icono a editar
+                row.find("#action-button").removeClass().addClass("fa-solid fa-pen-to-square");
+                row.find("#action-button").closest("a").removeClass("btn-primary").addClass("btn-outline-primary");
+            } 
+            
+            else {
+                row.find("input[type='number']").prop("disabled", false);
+                row.addClass("editable");
+
+                row.find("#action-button").removeClass().addClass("bi bi-floppy2-fill");
+                row.find("#action-button").closest("a").removeClass("btn-outline-primary").addClass("btn-primary");
+            }
+        });
+    });
+</script>
+<script>
+    function actualizarFechaYHora() {
+
+        var fechaActual = new Date();
+        var dia = fechaActual.getDate();
+        var mes = fechaActual.getMonth() + 1;
+        var anio = fechaActual.getFullYear();
+        var hora = fechaActual.getHours();
+        var minutos = fechaActual.getMinutes();
+        var segundos = fechaActual.getSeconds();
+
+
+        var fechaHoraTexto = dia + "/" + mes + "/" + anio + " " + hora + ":" + minutos + ":" + segundos;
+
+        document.getElementById("fecha-hora-actual").textContent = "Fecha: " + fechaHoraTexto;
+    }
+
+    setInterval(actualizarFechaYHora, 1000);
+
+    actualizarFechaYHora();
+</script>
+<script th:if="${salontrue}" th:inline="text">
+    alertify.set('notifier', 'position', 'top-center');
+    alertify.notify("[[${salontrue}]]", "success", 3, function () {
+        console.log('dismissed');
+    }).setContent("<div style='color: white;'>[[${salontrue}]]</div>");
+</script>
+
+<script th:if="${error}" th:inline="text">
+    alertify.set('notifier', 'position', 'top-center');
+    alertify.notify("[[${error}]]", "error", 3, function () {
+        console.log('dismissed');
+    }).setContent("<div style='color: white;'>[[${error}]]</div>");
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#confirmarGuardar').on('click', function () {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Revise su información antes de guardar.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('formularioAsistencia').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
+    integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp"
+    crossorigin="anonymous"></script>
+<script src="../js/sidebars.js"></script>
+
+</body>
+</html>

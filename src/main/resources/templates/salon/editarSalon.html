@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Aula</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Detalles del aula</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/salon/listarSalon}">Aulas</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detalles del aula</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex align-items-center">
+                        <div class="btn-toolbar mb-2 mb-md-0">
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+                    <form id="formularioSalon" action="/salon/actualizar" method="post" class="row g-3"
+                          th:object="${salon}">
+
+
+                        <input th:field="${salon.id}" type="hidden" class="form-control" name="id"
+                               placeholder="id"  id="salonId" readonly>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Código Correlativo</label>
+                            <input th:field="${salon.codcorrelativo}" type="text" class="form-control"
+                                   name="codcorrelativo"
+                                   placeholder="Código correlativo" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Grado</label>
+
+                            <input th:field="${salon.grados.nombre}" type="text" class="form-control"
+                                   name="gradoname" placeholder="gradoname" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Sección</label>
+                            <input th:field="${salon.seccion}" type="text" class="form-control"
+                                   name="seccion" placeholder="seccion" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Turno</label>
+                            <input th:field="${salon.turno}" type="text" class="form-control"
+                                   name="seccion" placeholder="turno" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nivel</label>
+                            <input th:field="${salon.nivel}" type="text" class="form-control"
+                                   name="seccion" placeholder="nivel" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Capacidad de estudiantes</label>
+                            <input th:field="${salon.capacidad}" type="number" class="form-control"
+                                   name="seccion" required>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="gap-2 col-12 text-center">
+                            <button type="button" id="confirmarGuardar" class="btn btn-primary">Guardar</button>
+                            <a th:href="@{/salon/listarSalon}" type="button" class="btn btn-danger">Cancelar</a>
+                        </div>
+                    </form>
+                    <div class="mt-4">
+                        <hr/>
+                        <h6>Clases asignadas para el año actual</h6>
+                        <hr/>
+                        <div>
+                            <ul class="list-group list-group-horizontal d-flex flex-wrap">
+                                <li class="list-group-item mb-3 mt-2" th:each="clases, x: ${clases}">
+                              <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ver clase" style="cursor: pointer">
+                                    <div th:text="'Curso: ' + ${clases.curso.nombre}"></div>
+                                    <div th:text="'Docente: ' + ${clases.usuario.nombre}"></div>
+                                </span>
+                                    <i class=" btn btn-outline-danger far fa-trash-alt ms-4"
+                                       style="cursor: pointer"
+                                       data-bs-toggle="tooltip" data-bs-placement="top"
+                                       title="Eliminar"
+                                       th:data-id="${clases.id}"></i>
+                                </li>
+                                <button type="button" class="btn list-group-item list-group-item-primary mb-3 mt-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#crearClaseModal">
+                                    <span>CREAR CLASE</span>
+                                    <i class="fas fa-plus ms-4"></i>
+                                </button>
+                            </ul>
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div *ngIf="aula.id">
+                        <div class="">
+                            <h6>Haga clic para agregar o quitar estudiantes del salón.</h6>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6>
+                                    Estudiantes asignados a esta aula.
+                                </h6>
+                                <ul class="list-group list-group-flush" th:if="${estudiantes.size() > 0}">
+                                    <div class="card">
+
+                                        <ul class="list-group list-group-flush">
+                                            <li th:each="estudiantes : ${estudiantes}"
+                                                th:onclick="'quitarEstudiante(' + ${estudiantes.id} + ')'"
+                                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="cursor: pointer">
+
+                                                <!-- Mostrar nombres y apellidos -->
+                                                <span th:text="${estudiantes.nombre}"></span>
+                                                <span th:text="${estudiantes.apellido}"></span>
+                                                <span th:text="${estudiantes.apellidoMaterno}"></span>
+
+
+                                                <!-- Mostrar grado -->
+                                                <span class="badge bg-primary rounded-pill" th:text="${estudiantes.grados.nombre}"></span>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </ul>
+
+                                    <div class="d-flex justify-content-center align-items-center flex-column" th:if="${estudiantes.size() == 0}">
+                                        <img src="/draw-svg/undraw_meet_the_team_re_4h08.svg" alt="Teaching Icon" style="width: 300px; height: 300px;">
+                                        No hay nuevos estudiantes en el aula.
+                                        <br>
+                                        <br>
+                                    </div>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-4">
+                                    <h6>Estudiantes sin asignar</h6>
+                                </div>
+                                <div class="card">
+                                    <ul class="list-group list-group-flush">
+                                        <li th:each="estudiantsinasig : ${estudiantsinasig}"
+                                            th:onclick="'agregarEstudiante(' + ${estudiantsinasig.id} + ')'"
+                                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="cursor: pointer">
+
+                                            <!-- Mostrar nombres y apellidos -->
+                                            <span th:text="${estudiantsinasig.nombre}"></span>
+                                            <span th:text="${estudiantsinasig.apellido}"></span>
+                                            <span th:text="${estudiantsinasig.apellidoMaterno}"></span>
+
+
+                                            <!-- Mostrar grado -->
+                                            <span class="badge bg-primary rounded-pill" th:text="${estudiantsinasig.grados.nombre}"></span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center flex-column" th:if="${estudiantsinasig.size() == 0}">
+                                    <img src="/draw-svg/undraw_meet_the_team_re_4h08.svg" alt="Teaching Icon" style="width: 300px; height: 300px;">
+                                    No hay nuevos estudiantes para asignar.
+                                    <br>
+                                    <br>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="crearClaseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="crearClaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog"  >
+            <div class="modal-content" style="width: 600px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearClaseModalLabel">Nueva clase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form >
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label for="cursoId" class="ms-1">Curso</label>
+                                <select class="form-select select-class-2s" id="cursoId" name="cursoId">
+                                    <option selected disabled>--- Seleccionar curso ---</option>
+                                    <option th:each="cursos, x: ${cursos}" th:value="${cursos.id}" th:text="${cursos.nombre}"></option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="profesorId" class="ms-1">Profesor</label>
+                                <select class="form-select select-class-2s" id="profesorId" name="profesorId">
+                                    <option selected disabled>--- Seleccionar profesor ---</option>
+                                    <option th:each="profesores, x: ${profesores}" th:value="${profesores.id}" th:text="${profesores.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="button" class="btn btn-color btn-guardar-clase" (click)="agregarClase(claseForm)">
+                        Crear clase
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script>
+    $(document).ready(function () {
+        $('#confirmarGuardar').on('click', function () {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción actualizará los datos.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, actualizar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    document.getElementById('formularioSalon').submit();
+                }
+            });
+        });
+    });
+</script>
+<!-- JavaScript para el manejo de eliminación con confirmación -->
+<script>
+    $(document).ready(function () {
+        // Escuchar el clic en el ícono de eliminar
+        $(document).on('click', '.fa-trash-alt', function () {
+            var classId = $(this).data('id'); // Obtener el ID de la clase
+            var listItem = $(this).closest('li'); // Seleccionar el <li> correspondiente
+
+            // Mostrar la alerta de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará el ítem seleccionado.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, realizar la solicitud AJAX para eliminar
+                    $.ajax({
+                        url: '/api/clases/eliminar/' + classId,  // URL del backend
+                        type: 'DELETE',  // Tipo de método HTTP
+                        success: function(response) {
+                            // Si la eliminación fue exitosa, eliminar el <li> del DOM
+                            listItem.remove();
+                            // Mostrar mensaje de éxito
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El ítem ha sido eliminado correctamente.',
+                                'success'
+                            );
+                        },
+                        error: function(err) {
+                            // Manejar error en caso de fallo en la solicitud AJAX
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al eliminar el ítem.',
+                                'error'
+                            );
+                            console.error('Error al eliminar la clase:', err);
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('.btn-color').on('click', function() {
+            // Obtén los valores de los campos del formulario
+            var cursoId = $('#cursoId').val();
+            var profesorId = $('#profesorId').val();
+            // Asegúrate de que salonId esté definido si lo necesitas
+            var salonId = $('#salonId').val(); // Reemplaza con el valor real si es necesario
+
+            // Realiza la solicitud AJAX
+            $.ajax({
+                url: '/api/clases/guardar', // Asegúrate de que esta URL sea correcta
+                type: 'POST',
+                data: {
+                    cursoId: cursoId,
+                    profesorId: profesorId,
+                    salonId: salonId
+                },
+                success: function(response) {
+                    mostrarNotificacion("success", "Éxito", "Clase creada correctamente");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function(xhr, status, error) {
+                    // Manejar el error aquí
+                    alert('Error al guardar la clase: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+    function agregarEstudiante(estudianteId) {
+        var aulaId = $('#salonId').val();
+
+        // Construir la URL con parámetros
+        var url = '/api_colegio/agregarEstudiante?estudianteId=' + estudianteId + '&aulaId=' + aulaId;
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function(response) {
+                Swal.fire({
+                    title: 'Éxito!',
+                    text: response,
+                    icon: 'success',
+                    preConfirm: () => {
+                        location.reload();
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire('Upss!', xhr.responseText, 'warning');
+            }
+        });
+    }
+
+</script>
+</body>
+
+</html>

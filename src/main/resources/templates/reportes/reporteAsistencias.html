@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Reporte de Asistencias</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Reportes de asistencias</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Reporte asistencias</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <form id="formAsistenciaRPT">
+                        <div class="row align-items-center"> <!-- Alinea los elementos verticalmente -->
+                            <div class="col-md-2">
+                                <label for="fecha_asistencia" class="ms-1">Fecha de solicitud</label>
+                                <input type="date" class="form-control form-control-sm" name="fecha_asistencia"
+                                       id="fecha_asistencia" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="salonId" class="ms-1">Aula: Grado y Sección</label>
+                                <select class="form-select select-class-2s form-select-sm" id="salonId" name="salonId">
+                                    <option value="" selected disabled>--- Seleccionar un grado y sección ---</option>
+                                    <option th:each="salones : ${salones}" th:value="${salones.id}"
+                                            th:text="${salones.codcorrelativo} +': ' +${salones.grados.nombre} +' - ' + ${salones.seccion} +' - ' + ${salones.nivel} "></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="claseId" class="ms-1">Curso: Clase y Docente</label>
+                                <select class="form-select select-class-2s form-select-sm" id="claseId" name="claseId">
+                                    <option value="" selected disabled>--- Seleccionar las clases del aula ---</option>
+                                    <option th:each="clases : ${clases}" th:value="${clases.id}"
+                                            th:text="${clases.anio} +': '+${clases.curso.nombre} +' - ' + ${clases.usuario.nombre} +' ' + ${clases.usuario.apellido} "></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 mt-4 align-items-right">
+                                <button type="submit" class="btn btn-sm btn-primary"><i
+                                        class="fa-solid fa-circle-info"></i> Consultar reporte de asistencias
+                                </button>
+                            </div>
+                            <br>
+                            <div class="alert alert-info alert-dismissible fade show mt-4" role="alert">
+                                <strong>
+                                    <span>IMPORTANTE: </span>
+                                    <span style="color: #28a745;">A = ASISTIÓ</span>
+                                    <span style="color: #dc3545;">F = FALTÓ</span>
+                                    <span style="color: #ffc107;">T = TARDE</span>
+                                    <span style="color: #6c757d;">NA = NINGUNO (POR DEFECTO)</span>.
+                                </strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div id="tablaContainer">
+                            <table class="table align-middle mb-0">
+                                <thead class="table-light" style="width:100%">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Estudiante</th>
+                                    <th scope="col">Asistencia</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <iframe id="iframeReporte"
+                            style="width: 100%; height: 700px; display: none; border: none;"></iframe>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container");
+
+    function cargarReporte() {
+        const iframe = document.getElementById("iframeReporte");
+        iframe.src = "/api_colegio/reporteCalificaciones"; // URL del reporte
+        iframe.style.display = "block"; // Mostrar el iframe en el card-body
+    }
+
+    initializeSelect2ByClassbtrap('select-class-2s');
+</script>
+<script>
+
+    $(document).ready(function () {
+        // Captura el evento de envío del formulario
+        $('#formAsistenciaRPT').submit(function (event) {
+            event.preventDefault(); // Evita el comportamiento por defecto del formulario
+            const salonId = document.getElementById("salonId").value;
+            const claseId = document.getElementById("claseId").value;
+            const fechaAsistencia = document.getElementById("fecha_asistencia").value;
+
+            if (!salonId || !claseId || !fechaAsistencia) {
+                mostrarNotificacion("warning", "Error", "Por favor, complete todos los campos.");
+                return; // Detener el envío si hay campos vacíos
+            }
+
+
+            var urlgetasis = '/api_colegio/reportes/asistencias/' + claseId + '/' + salonId + '/' + fechaAsistencia;
+
+
+            // Enviar datos con AJAX
+            $.ajax({
+                url: urlgetasis,
+                type: 'GET',
+                success: function (data) {
+                    // Construir la tabla completa con el encabezado
+                    let tableHtml = `<div class="table-responsive">
+            <table class="table align-middle mb-0" id="ReporteAsistenciatb">
+                <thead class="table-light" style="width:100%">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Estudiante</th>
+                        <th scope="col">Asistencia</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+                    // Añadir filas de datos
+                    data.forEach(function (asistencia, index) {
+                        tableHtml += `<tr data-id="${asistencia.id}">
+                <td>${index + 1}</td>
+                <td>
+                    <label class="ms-1">${asistencia.nombreEstudiante}</label>
+                </td>
+                <td>
+                    <label class="ms-1">${asistencia.asistencia}</label>
+                </td>
+            </tr>`;
+                    });
+
+                    // Cerrar la tabla y el tbody
+                    tableHtml += `</tbody></table></div>`;
+
+
+                    // Reemplazar el contenido de la tabla completa en el contenedor de la tabla
+                    $('#tablaContainer').html(tableHtml);
+                    var tablanotas = configurarDataTable('ReporteAsistenciatb', 'si');
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener asistencias:", error);
+
+                    // Extraer el mensaje de error de la respuesta del servidor
+                    let errorMessage = xhr.responseText || "Ocurrió un error desconocido.";
+
+                    // Reemplazar el contenido con el mensaje de error
+                    $('#tablaContainer').html(`
+                        <div class="alert alert-danger" role="alert">
+                            No se pudieron obtener las asistencias: ${errorMessage}
+                        </div>
+                    `);
+                }
+            });
+
+        });
+    });
+
+</script>
+
+</body>
+
+</html>

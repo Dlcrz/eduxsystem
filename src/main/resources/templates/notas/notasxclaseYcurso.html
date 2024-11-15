@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Calificaciones</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Calificaciones</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Calificaciones</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column"> <!-- Contenedor para los elementos actuales -->
+                            <div class="alert alert-warning text-center mb-2" role="alert">
+                                <h5 id="fecha-hora-actual"></h5>
+                            </div>
+                            <h4>Notas para el curso: <span th:text="${cursonombre}"></span></h4>
+                            <p>Salón: <span th:text="${codcorrelativo}"></span></p>
+                            <input type="hidden" id="id_salon" th:value="${SalonId}">
+                            <a href="#" class="btn btn-sm btn-outline-secondary mx-1">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                Generar reporte de notas
+                            </a>
+                        </div>
+
+                        <div class="btn-toolbar mb-2 mb-md-0"> <!-- Contenedor para los botones -->
+
+                            <a href="#"
+                               class="btn btn-sm btn-outline-secondary gap-1"
+                               th:each="trimestres : ${trimestres}"
+                               th:text="'Trimestre '+ ${trimestres.trimestre} + ' ' + ${trimestres.anio}"
+                               th:data-trimestre-id="${trimestres.id}"
+                               th:data-clase-id="${claseId}"
+                               th:data-text="'Calificaciones: Trimestre ' + ${trimestres.trimestre} + ' ' + ${trimestres.anio}"
+                               onclick="consultarCalificaciones(this)"></a>
+                            <a href="#" class="btn btn-sm btn-secondary gap-1"> Calificaciones finales</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <h4 id="id_trimestre_seleccionado">Seleccione un trimestre </h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <div id="resultados" class="table-responsive small">
+                            <table id="tablaCalificaciones" class="table">
+                                <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Nota 1</th>
+                                    <th>Nota 2</th>
+                                    <th>Nota 3</th>
+                                    <th>Promedio Final</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Los datos se llenarán aquí con AJAX -->
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <a th:href="@{/salon/listarClasesSalon(salonId=${SalonId})}" type="button"
+                           class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-arrow-rotate-left fa-fade"></i>
+                            Volver al listado cursos</a>
+                        <a th:href="@{/salon/listarSalon}" type="button" class="btn btn-sm btn-outline-danger"><i
+                                class="fa-solid fa-list"></i>&nbsp; Volver al listado de salones</a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script th:if="${salontrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${salontrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+<script>
+
+    function actualizarFechaYHora() {
+
+        var fechaActual = new Date();
+        var dia = fechaActual.getDate();
+        var mes = fechaActual.getMonth() + 1;
+        var anio = fechaActual.getFullYear();
+        var hora = fechaActual.getHours();
+        var minutos = fechaActual.getMinutes();
+        var segundos = fechaActual.getSeconds();
+
+
+        var fechaHoraTexto = dia + "/" + mes + "/" + anio + " " + hora + ":" + minutos + ":" + segundos;
+
+        document.getElementById("fecha-hora-actual").textContent = "Fecha: " + fechaHoraTexto;
+    }
+
+    setInterval(actualizarFechaYHora, 1000);
+
+    actualizarFechaYHora();
+</script>
+<script>
+    function consultarCalificaciones(element) {
+        var trimestreTexto = element.getAttribute('data-text');
+        document.getElementById('id_trimestre_seleccionado').textContent = trimestreTexto;
+        // Obtener los atributos data del elemento
+        var trimestreId = element.getAttribute("data-trimestre-id");
+        var claseId = element.getAttribute("data-clase-id");
+        var salonId = document.getElementById("id_salon").value;
+        // Construir la URL de la solicitud
+        var url = '/api/calificaciones/n/' + claseId + '/' + trimestreId + '/' + salonId;
+        // http://localhost:90/api/calificaciones/12/4
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+
+                // Llenar la tabla con los datos obtenidos
+                let tableBody = $('#tablaCalificaciones tbody');
+                tableBody.empty(); // Limpiar la tabla antes de llenarla
+
+                data.forEach(function (calificacion) {
+                    let row = `<tr data-id="${calificacion.id}">
+                            <td>
+                            <label class="form-control">${calificacion.nombreEstudiante}</label>
+                            </td>
+                            <td>
+
+                                <input
+                                    type="number" min="0.0" max="20.0" step="0.1" class="form-control nota-input"
+                                    value="${calificacion.nota1}"
+                                    name="nota1"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="number" min="0.0" max="20.0" step="0.1" class="form-control nota-input"
+                                    value="${calificacion.nota2}"
+                                    name="nota2"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="number" min="0.0" max="20.0" step="0.1" class="form-control nota-input"
+                                    value="${calificacion.nota3}"
+                                    name="nota3"
+                                />
+                            </td>
+
+                            <td class="promedio" data-promedio="${calificacion.promedio}"> <label class="form-control promedio">${calificacion.promedio}</label> </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary edit-button">
+                                    <i class="fa-solid fa-pen-to-square" id="action-button"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-success save-button" style="display: none;">
+                                    <i class="fa-solid fa-save"></i>
+                                </a>
+                            </td>
+                        </tr>`;
+                    tableBody.append(row);
+                    $("input[type='number']").prop("disabled", true);
+
+                });
+                //var tablanotas = configurarDataTable('tablaCalificaciones', 'si');
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener calificaciones:", error);
+                alert('No se encontraron calificaciones.');
+            }
+        });
+    }
+
+    $(document).on('click', '.edit-button', function(e) {
+        e.preventDefault();
+        let row = $(this).closest('tr');
+        row.find('input[type="number"]').prop('disabled', false);
+        row.find('.edit-button').hide();
+        row.find('.save-button').show();
+    });
+
+    // Manejar el clic en el botón Guardar
+    $(document).on('click', '.save-button', function(e) {
+        e.preventDefault();
+        let row = $(this).closest('tr');
+        let id = row.data('id');  // Obtener el id de la fila (suponiendo que el id se asigna en data-id)
+
+        // Obtener los valores de las notas
+        let nota1 = parseFloat(row.find('input[name="nota1"]').val());
+        let nota2 = parseFloat(row.find('input[name="nota2"]').val());
+        let nota3 = parseFloat(row.find('input[name="nota3"]').val());
+
+        // Calcular el promedio
+        let promedio = (nota1 + nota2 + nota3) / 3;
+        promedio = Math.round(promedio * 100) / 100; // Redondear a dos decimales
+
+        // Formatear el promedio según tus requisitos
+        if (promedio % 1 === 0) {
+            // Si es un número entero, lo devolvemos sin decimales
+             promedio.toString();
+        } else {
+            // Si tiene decimales, lo formateamos a dos decimales
+             promedio.toFixed(2);
+        }
+
+        row.find('input[type="number"]').prop('disabled', true);
+        row.find('.save-button').hide();
+        row.find('.edit-button').show();
+
+        // enviar por ajax
+        let calificacionData = {
+            id: id,
+            nota1: nota1,
+            nota2: nota2,
+            nota3: nota3,
+            promedio: promedio
+        };
+        $.ajax({
+            url: '/api/calificaciones/guardarCalificacionesTrimestrales',  // URL del controlador de Spring Boot
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(calificacionData),
+            success: function(response) {
+                mostrarNotificacion("success", "Éxito", response);
+            },
+            error: function(xhr, status, error) {
+                mostrarNotificacion("error", "Error", "Error al guardar las calificaciones.");
+                console.error('Error al guardar las calificaciones:', error);
+            }
+        });
+
+    });
+
+
+    function actualizarPromedio(row) {
+        // Obtener las notas de la fila actual
+        let nota1 = parseFloat(row.find('input[name="nota1"]').val()) || 0;
+        let nota2 = parseFloat(row.find('input[name="nota2"]').val()) || 0;
+        let nota3 = parseFloat(row.find('input[name="nota3"]').val()) || 0;
+
+        // Calcular el promedio
+        let promedio = (nota1 + nota2 + nota3) / 3;
+
+        // Actualizar el campo de promedio en la fila
+        let promedioCell = row.find('.promedio .promedio');
+        promedioCell.text(promedio.toFixed(1)); // Mostrar el promedio con un decimal
+
+        // Cambiar el color según el valor del promedio
+        if (promedio < 12) {
+            promedioCell.css('color', 'red');
+        } else if (promedio >= 12 && promedio <= 15) {
+            promedioCell.css('color', 'orange'); // Color "warning"
+        } else {
+            promedioCell.css('color', 'green');
+        }
+    }
+
+    $(document).on('input', '.nota-input', function() {
+        let row = $(this).closest('tr'); // Obtener la fila actual
+        let inputValue = parseFloat($(this).val()); // Obtener el valor del input
+
+        if (inputValue > 20) {
+            $(this).val(20); // Si es mayor a 20, establecer el valor en 20
+        } else if (inputValue < 0) {
+            $(this).val(0); // Si es menor a 0, establecer el valor en 0
+        } else if ($(this).val() === '') {
+            $(this).val(0);
+        }
+        actualizarPromedio(row); // Llamar a la función para actualizar el promedio
+    });
+</script>
+</body>
+
+
+</html>

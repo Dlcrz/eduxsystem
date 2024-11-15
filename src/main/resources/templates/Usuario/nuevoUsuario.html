@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Nuevo usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Crear nuevo usuario</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/usuario/listarUsuario}">Usuarios</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Nuevo usuario</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="d-flex align-items-center">
+                        <div class="btn-toolbar mb-2 mb-md-0">
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+                    <form action="/usuario/registrarUsuario" method="post" class="row g-3" id="formularioUsuario">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label">Nombres</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="apellido" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellidos"
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dni" class="form-label">DNI</label>
+                            <input type="text" class="form-control" name="dni" id="dni" placeholder="12345678"
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="celular" class="form-label">Celular</label>
+                            <input type="text" class="form-control" name="celular" id="celular" placeholder="987654321"
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                   placeholder="example@lavida.com"
+                                   required>
+                        </div>
+                        <div class="col-6">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" name="direccion" id="direccion"
+                                   placeholder="AV. Revolución N°600"
+                                   required>
+                        </div>
+
+                        <div class="col-4">
+                            <label for="user" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" name="user" id="user" placeholder="admin123"
+                                   required>
+                        </div>
+                        <div class="col-4">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="Ingrese 6 digitos como mínimo" required>
+                        </div>
+                        <div class="col-4">
+                            <label for="rol" class="form-label">Perfil</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="rol" name="rol" required>
+                                    <option selected>seleccione un rol</option>
+                                    <option value="Profesor">Profesor</option>
+                                    <option value="Director">Director</option>
+                                    <option value="Administrador">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--div class="col-6">
+                            <div id="directorFields" style="display: none">
+                                <label class="form-label" for="tiempoCargo">Tiempo de Cargo (Director):</label>
+                                <input class="form-control" type="text" id="tiempoCargo" name="tiempoCargo"
+                                       placeholder="Ingrese el tiempo de cargo">
+                            </div>
+                        </div-->
+                        <!--div class="col-6">
+                            <div id="profesorFields" style="display: none">
+                                <label class="form-label" for="curso">Curso que Enseña (Profesor):</label>
+                                <div class="input-group mb-3">
+                                    <select class="form-select" id="curso" name="curso">
+                                        <option selected>Seleccione el curso</option>
+                                        <option th:each="curso, x: ${cursos}" th:value="${curso.id}"
+                                                th:text="${curso.nombre}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div-->
+
+                        <br>
+                        <hr>
+
+                        <div class=" gap-2 col-12 text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Registrar</button>
+
+                            <a th:href="@{/usuario/listarUsuario}" type="button" class="btn btn-danger"><i class="fa-solid fa-cancel"></i> cancelar</a>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+<script th:if="${usuariotrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${usuariotrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+<script>
+    configurarEliminacionDinamica('tablaUsuarios', 'eliminar-usuario', 'Esta acción eliminará el usuario permanentemente.');
+    var tableclvt = configurarDataTable('tablaUsuarios', 'no');
+
+</script>
+<script>
+    document.getElementById('formularioUsuario').addEventListener('submit', function (event) {
+
+        var dni = document.getElementById('dni').value;
+        var cel = document.getElementById('celular').value;
+
+        if (!esNumeroEntero(dni) || dni.length !== 8) {
+            event.preventDefault();
+            alert('El DNI debe tener 8 dígitos numéricos.');
+        }
+        if (!esNumeroEntero(cel) || cel.length !== 9) {
+            event.preventDefault();
+            alert('El número de celular debe tener 9 dígitos numéricos.');
+        }
+    });
+
+    function esNumeroEntero(valor) {
+        return /^\d+$/.test(valor);
+    }
+</script>
+</body>
+
+</html>

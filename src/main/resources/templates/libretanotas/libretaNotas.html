@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Reporte de calificaciones</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Criterios para libretas de notas</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/inicio}">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Competencias para libretas de notas</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                <h6><a class="btn btn-primary"><i class="fa-solid fa-plus"></i></a> Agregar nuevas competencias de calificación para un curso</h6>
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <form>
+                                    <div class="row"> <!-- Alinea los elementos verticalmente -->
+                                        <div class="col-md-4">
+                                            <label for="anioacademico" class="ms-1">Año académico: </label>
+                                            <select class="form-select select-class-2s" id="anioacademico" name="anioacademico" required>
+                                                <option selected disabled>--- Seleccionar un año ---</option>
+                                                <!-- Opciones aquí -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="gradoId" class="ms-1">Grado: </label>
+                                            <select class="form-select select-class-2s" id="gradoId" name="gradoId" required>
+                                                <option selected disabled>--- Seleccionar un grado ---</option>
+                                                <option th:each="grados, x: ${grados}" th:value="${grados.id}" th:text="${grados.nombre}+'-'+${grados.descripcion}"></option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="cursoId" class="ms-1">Curso: </label>
+                                            <select class="form-select select-class-2s" id="cursoId" name="cursoId" required>
+                                                <option selected disabled>--- Seleccionar un curso ---</option>
+                                                <option th:each="curso, x: ${curso}" th:value="${curso.id}" th:text="${curso.nombre}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h5>Competencias</h5>
+                                            <div id="competenciasContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="agregarCompetencia()">
+                                                <i class="fa-solid fa-plus"></i> Agregar competencia
+                                            </button>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" id="tablalibretanotas">
+                            <thead class="table-light" style="width:100%">
+                            <tr>
+                                <th scope="col" class="no-print">#</th>
+                                <th scope="col">Año académico</th>
+                                <th scope="col">Curso</th>
+                                <th scope="col">Grado</th>
+                                <th scope="col">Acciones</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container");
+    initializeSelect2ByClass('select-class-2s');
+
+</script>
+<script>
+    const selectAnios = document.getElementById('anioacademico');
+    const anioActual = new Date().getFullYear();
+
+    for (let i = anioActual; i <= anioActual + 1; i++) {
+        const option = document.createElement('option');
+        option.value = i;  // El valor del año
+        option.text = i;   // El texto visible en el select
+        selectAnios.appendChild(option);  // Añadir la opción al select
+    }
+</script>
+<script>
+    var ventana;
+
+    //Ejemplo de función para abrir una ventana en el navegador con un tamaño personalizado
+    //En este caso se abrirá una ventana en blanco
+    function abrirVentana()
+    {
+
+            ventana = window.open("", "",
+                "menubar=no, scrollbars=no, width=400, height=350");
+            aviso("Ventana emergente abierta con tamaño 400x350.");
+
+    }
+
+
+    let contadorCompetencias = 0;
+
+    function agregarCompetencia() {
+        contadorCompetencias++;
+
+        // Crear un contenedor para la nueva competencia
+        const div = document.createElement('div');
+        div.className = 'input-group mb-2';
+        div.innerHTML = `
+            <input type="text" class="form-control" name="competencias[${contadorCompetencias}].competencia" placeholder="Especifique la competencia de evaluación" required>
+            <button type="button" class="btn btn-danger" onclick="eliminarCompetencia(this)"><i class="fa-solid fa-x"></i></button>
+        `;
+
+        document.getElementById('competenciasContainer').appendChild(div);
+    }
+
+    function eliminarCompetencia(boton) {
+        boton.parentElement.remove();
+    }
+    var tablertlvt = configurarDataTable('tablalibretanotas', 'no');
+</script>
+
+<script th:if="${salontrue}" th:inline="text">
+    mostrarNotificacion("success", "Éxito", "[[${salontrue}]]");
+</script>
+<script th:if="${error}" th:inline="text">
+    mostrarNotificacion("error", "Error", "[[${error}]]");
+</script>
+</body>
+
+</html>

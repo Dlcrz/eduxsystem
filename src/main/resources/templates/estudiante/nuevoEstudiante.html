@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Nuevo estudiante</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <div th:replace="scrpitsheader :: div"></div>
+
+
+</head>
+<body>
+
+<!--página-->
+<div class="wrapper">
+    <!--menu -->
+    <div th:replace="partmenu :: div"></div>
+
+    <!--Inicio page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="d-flex justify-content-between align-items-center  pb-1 ">
+                <h5 class="page-title">Crear registro de solicitud de matrícula</h5>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/estudiante/listarEstudiante}">Matrícula</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Registro de matrícula</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- card contenido principal-->
+            <div class="card radius-10">
+                <div class="card-header pt-3">
+                    <h6 class="m-t-3 m-b-20 header-title mt-3"><b>Nuevo registro</b></h6>
+                </div>
+                <div class="card-body">
+
+                    <form action="" th:object="${estudiante}" method="post" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="owner" class="form-label">Creador de la matrícula</label>
+                                    <select class="form-select" id="owner" disabled>
+                                        <option th:value="${usuariodetalle.getId}" th:text="${usuariodetalle.getNombre() +' '+ usuariodetalle.getApellido()}" selected></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fechaRegistro" class="form-label">Fecha Registro</label>
+                                    <input id="fechaRegistro" type="date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <h6 class="m-t-3 m-b-20 header-title mt-3"><b>Datos del estudiante</b></h6>
+                            </div><br>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombres*</label>
+                                    <input id="nombre" type="text" class="form-control" th:field="*{nombre}"
+                                           placeholder="Nombres" th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{nombre}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="apellidoPaterno" class="form-label">Apellido Paterno*</label>
+                                    <input id="apellidoPaterno" type="text" class="form-control" th:field="*{apellido}"
+                                           placeholder="Apellido Paterno" th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{apellido}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                                    <input id="apellidoMaterno" type="text" class="form-control"
+                                           th:field="*{apellidoMaterno}" placeholder="Apellido Materno"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{apellidoMaterno}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dni" class="form-label">DNI*</label>
+                                    <input id="dni" type="text" class="form-control" th:field="*{dni}" placeholder="DNI"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{dni}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <select id="sexo" class="form-select" th:field="*{sexo}" th:errorclass="is-invalid">
+                                        <option value="" disabled selected>Seleccione...</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Femenino">Otro</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:errors="*{sexo}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fechaNacimiento" class="form-label">F. Nacimiento</label>
+                                    <input id="fechaNacimiento" type="date" class="form-control"
+                                           th:field="*{fechaNacimiento}" th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{fechaNacimiento}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <input id="direccion" type="text" class="form-control" th:field="*{direccion}"
+                                           placeholder="Dirección" th:errorclass="is-invalid">
+                                    <div class="invalid-feedback" th:errors="*{direccion}"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <h6 class="m-t-3 m-b-20 header-title mt-3"><b>Información académica</b></h6>
+                            </div><br>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="grado" class="form-label">Grado al que solicita*</label>
+                                    <select class="form-select" id="grado" th:field="*{grados}" th:errorclass="is-invalid">
+                                        <option value="" selected>Seleccione grado</option>
+                                        <option th:each="grado : ${grado}" th:value="${grado.id}" th:text="${grado.nombre} +' -- ' + ${grado.descripcion} "></option>
+                                    </select>
+                                    <div class="invalid-feedback" th:errors="*{grados}"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <h6 class="m-t-3 m-b-20 header-title mt-3"><b>Información del apoderado</b></h6>
+                            </div><br>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Ingresar datos del apoderado después de crear el registro</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <br>
+                        <hr>
+                        <div class=" gap-2 col-12 text-center">
+                            <button class="btn btn-primary"><i class="fa-solid fa-save"></i> Registrar</button>
+
+                            <a th:href="@{/estudiante/listarEstudiante}" type="button" class="btn btn-danger"><i class="fa-solid fa-cancel"></i> cancelar</a>
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--Fin page wrapper -->
+    <!--footer-->
+    <div th:replace="footer :: div"></div>
+</div>
+<!--fin wrapper-->
+
+<div th:replace="scriptsfooter :: div"></div>
+
+<script>
+    new PerfectScrollbar(".app-container")
+</script>
+
+
+</body>
+
+</html>
